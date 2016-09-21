@@ -14,8 +14,22 @@ WORKDIR /opt
 
 # Build Assimp
 RUN git clone https://github.com/assimp/assimp.git /opt/assimp
+
 WORKDIR /opt/assimp
-RUN mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .. && \
+
+RUN git checkout master \
+    && mkdir build && cd build && \
+    cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DASSIMP_BUILD_COLLADA_IMPORTER=ON \
+    -DASSIMP_BUILD_DXF_IMPORTER=ON \
+    -DASSIMP_BUILD_FBX_IMPORTER=ON \
+    -DASSIMP_BUILD_IFC_IMPORTER=ON \
+    -DASSIMP_BUILD_OBJ_IMPORTER=ON \
+    -DASSIMP_BUILD_PLY_IMPORTER=ON \
+    -DASSIMP_DOUBLE_PRECISION=ON \
+    -DBUILD_SHARED_LIBS=OFF \
+    .. && \
     make && make install
 
 #CMD assimp
